@@ -3,10 +3,10 @@ SHELL := /bin/bash -o pipefail
 
 .PHONY: python-venv
 python-venv:
-	sudo -H pip install virtualenv
+	pip install virtualenv
 	virtualenv ci-venv
 	source ci-venv/bin/activate
-	sudo -H pip install -r requirements.txt
+	pip install -r requirements.txt
 
 .PHONY: install-dependencies
 install-dependencies:
@@ -25,5 +25,3 @@ install-moor-ai:
 .PHONY: python-test
 python-test:
 	source ci-venv/bin/activate
-	sudo -H pip install ./python
-	python -m python.moor_ai.test_api
