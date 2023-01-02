@@ -11,7 +11,7 @@ python-venv:
 .PHONY: install-dependencies
 install-dependencies:
 	apt-get update
-	apt-get install -y clang-format cmake g++ gcc gcovr ggcov git lcov make python-is-python3 python3-pip python3.8-venv tzdata uncrustify valgrind
+	apt-get install -y clang-format cmake g++ gcc gcovr ggcov git iwyu lcov make python-is-python3 python3-pip python3.8-venv tzdata uncrustify valgrind
 
 .PHONY: compile-moor-ai
 compile-moor-ai:
