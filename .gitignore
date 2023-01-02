@@ -1,0 +1,10 @@
+.DS_Store
+.vscode
+
+build
+bin
+CMakeFiles
+
+*.a
+*.dll
+*.so
