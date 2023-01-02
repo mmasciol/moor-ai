@@ -97,4 +97,5 @@ jobs:
       - name: build python environment
         run: |
           chmod +x ./.ci-venv/*
+          chmod +x /github/home/.cache/pip
           make python-test
