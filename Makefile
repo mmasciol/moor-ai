@@ -4,8 +4,8 @@ SHELL := /bin/bash -o pipefail
 .PHONY: python-venv
 python-venv:
 	pip install virtualenv
-	virtualenv ci-venv
-	source ci-venv/bin/activate
+	virtualenv .ci-venv
+	source .ci-venv/bin/activate
 	pip install -r requirements.txt
 
 .PHONY: install-dependencies
@@ -24,4 +24,6 @@ install-moor-ai:
 
 .PHONY: python-test
 python-test:
-	source ci-venv/bin/activate
+	source .ci-venv/bin/activate
+	.ci-venv/bin/pip install ./python
+	python -m python.moor_ai.test_api

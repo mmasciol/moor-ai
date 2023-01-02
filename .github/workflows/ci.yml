@@ -98,5 +98,3 @@ jobs:
         run: |
           chmod +x ./ci-venv/*
           make python-test
-          sudo -H pip install ./python
-          python -m python.moor_ai.test_api
