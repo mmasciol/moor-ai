@@ -21,11 +21,13 @@ lib_name = 'libmoor-ai{}'.format(ext)
 
 
 class Domain(object):
-    _lib = cdll.LoadLibrary(os.path.join(sys.prefix, lib_name))
+    try:
+        _lib = cdll.LoadLibrary(os.path.join(sys.prefix, lib_name))
+    except OSError:
+        _lib = cdll.LoadLibrary(os.path.join('../bin/', lib_name))
 
     _lib.api_hook.restype = c_int
 
     def run(self) -> None:
         size = self._lib.api_hook()
         print(size)
-
