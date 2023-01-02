@@ -12,8 +12,8 @@ install-dependencies:
 	apt-get update
 	apt-get install -y cmake g++ gcc gcovr ggcov git lcov make python-is-python3 python3-pip python3.8-venv tzdata valgrind
 
-.PHONY: compile-yaml-fortran
-compile-yaml-fortran:
+.PHONY: compile-moor-ai
+compile-moor-ai:
 	cmake -DYAML_BUILD_SHARED_LIBS=ON -B build
 	make -C ./build -j4
 
