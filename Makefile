@@ -4,6 +4,7 @@ SHELL := /bin/bash -o pipefail
 .PHONY: python-venv
 python-venv:
 	pip install -r requirements.txt
+	cd python && python setup.py bdist_wheel
 
 .PHONY: install-dependencies
 install-dependencies:
