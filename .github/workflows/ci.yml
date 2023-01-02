@@ -93,6 +93,8 @@ jobs:
         run: make install-moor-ai
       - name: build python environment
         run: |
+          chmod +x ./bin/*
+          chmod +x ./build/*
           make install-moor-ai
           mv ./python/moor_ai/libmoor-ai.so /usr/libmoor-ai.so
           make python-test
