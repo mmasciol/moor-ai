@@ -8,12 +8,9 @@ import os
 import sys
 
 
-sys.prefix
-
-class T(object):
+class Domain(object):
     _lib = cdll.LoadLibrary(os.path.join(sys.prefix, 'libmoor-ai.dylib'))
 
-    #_lib.api_hook.argtypes = [None]
     _lib.api_hook.restype = c_int
 
     def run(self) -> None:

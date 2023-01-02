@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import moor_ai_api as maa
+import moor_ai.api as api
+
 
 if __name__ == '__main__':
-    print('inside pyton')
-
-    m = maa.T()
-    m.run()
+    item = api.Domain()
+    item.run()

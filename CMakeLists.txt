@@ -29,3 +29,6 @@ set_target_properties(yaml-cpp PROPERTIES FOLDER "yaml-cpp")
 set_target_properties(yaml-cpp-parse PROPERTIES FOLDER "yaml-cpp")
 set_target_properties(yaml-cpp-read PROPERTIES FOLDER "yaml-cpp")
 set_target_properties(yaml-cpp-sandbox PROPERTIES FOLDER "yaml-cpp")
+
+file(COPY ${CMAKE_BINARY_DIR}/../bin/libmoor-ai.dylib
+     DESTINATION ../python/moor_ai)
