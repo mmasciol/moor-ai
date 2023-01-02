@@ -1,0 +1,15 @@
+.DS_Store
+.vscode
+__pycache__
+moor-env
+*.egg-info
+.ci-venv
+
+build
+bin
+CMakeFiles
+
+*.a
+*.dll
+*.so
+*.dylib

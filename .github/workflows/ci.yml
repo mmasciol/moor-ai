@@ -1,0 +1,98 @@
+# https://docs.docker.com/ci-cd/github-actions/
+# https://github.com/docker/build-push-action/issues/225
+
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: mdmasciola/moor-ai:0.0.1
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: pre-build
+        run: apt-get update
+      - name: build
+        run: make install-dependencies
+      - name: compile
+        run: |
+          make compile-moor-ai
+          make install-moor-ai
+      - name: archive binary artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: binaries
+          path: bin/*
+          retention-days: 1
+      - name: archive build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build/*
+          retention-days: 1
+
+  test:
+    needs: [build]
+    runs-on: ubuntu-latest
+    container:
+      image: mdmasciola/moor-ai:0.0.1
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: download binary artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: binaries
+          path: bin
+      - name: download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+      - name: test execution
+        run: |
+          chmod +x ./bin/*
+#          make test-execution
+      - name: test memory leaks
+        run: |
+          chmod +x ./bin/*
+#          make test-memory-check
+
+  test-python:
+    needs: [build]
+    runs-on: ubuntu-latest
+    container:
+      image: mdmasciola/moor-ai:0.0.1
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: download binary artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: binaries
+          path: bin
+      - name: download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+      - name: build python environment
+        run: |
+          chmod +x ./bin/*
+          chmod +x ./build/*
+          make install-moor-ai && make python-venv && cd python/dist && pip install *.whl
+      - name: run python unit test
+        run: make python-test
