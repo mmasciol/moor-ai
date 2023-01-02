@@ -16,6 +16,7 @@ install-dependencies:
 compile-moor-ai:
 	cmake -DYAML_BUILD_SHARED_LIBS=ON -B build
 	make -C ./build -j4
+	cmake --install ./build/
 
 # .PHONY: test-memory-check
 # test-memory-check:
