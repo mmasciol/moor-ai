@@ -12,12 +12,12 @@ install-dependencies:
 	apt-get install -y clang-format cmake g++ gcc gcovr ggcov git iwyu lcov make python-is-python3 python3-pip python3.8-venv tzdata uncrustify valgrind
 
 .PHONY: compile
-compile-moor-ai:
+compile:
 	cmake -DYAML_BUILD_SHARED_LIBS=ON -B build
 	make -C ./build -j4
 
 .PHONY: install
-install-moor-ai:
+install:
 	cmake --install ./build/
 
 .PHONY: python-test
