@@ -2,6 +2,8 @@
 .vscode
 __pycache__
 moor-env
+*.egg-info
+.ci-venv
 
 build
 bin
