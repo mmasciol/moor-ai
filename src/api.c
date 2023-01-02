@@ -9,5 +9,5 @@ int api_hook() {
 
 int api_allocate_domain(struct Domain **d) {
   printf("--> Outside DLL!\n");
-  return 1;
+  return 0;
 }
