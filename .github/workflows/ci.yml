@@ -96,5 +96,6 @@ jobs:
           make python-venv
       - name: build python environment
         run: |
+          chmod +x ./c-venv/*
           source ci-venv/bin/activate
           python -m python.moor_ai.test_api
