@@ -1,8 +1,8 @@
-#ifndef MOOR_AI_DEF
-#define MOOR_AI_DEF
+#ifndef MOOR_AI_DEF_H
+#define MOOR_AI_DEF_H
 
 typedef struct DomainTag {
   char* label;
 } Domain;
 
-#endif
+#endif /* MOOR_AI_DEF_H */
