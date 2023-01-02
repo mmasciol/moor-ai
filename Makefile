@@ -22,3 +22,8 @@ compile-moor-ai:
 .PHONY: install-moor-ai
 install-moor-ai:
 	cmake --install ./build/
+
+.PHONY: python-test
+python-test:
+	source ci-venv/bin/activate
+    python -m python.moor_ai.test_api
