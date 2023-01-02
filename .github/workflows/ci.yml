@@ -97,4 +97,5 @@ jobs:
       - name: build python environment
         run: |
           make install-moor-ai
+          mv ./python/moor_ai/libmoor-ai.so /usr/libmoor-ai.so
           make python-test
