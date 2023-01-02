@@ -3,10 +3,7 @@ SHELL := /bin/bash -o pipefail
 
 .PHONY: python-venv
 python-venv:
-	pip install virtualenv
-	virtualenv .ci-venv
-	source .ci-venv/bin/activate
-	.ci-venv/bin/pip install -r requirements.txt
+	pip install -r requirements.txt
 	pip install ./python
 
 .PHONY: install-dependencies
