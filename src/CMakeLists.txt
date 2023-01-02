@@ -10,6 +10,8 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     message(ERROR "GCC compiler unsupported")
 endif()
 
+add_compile_definitions(DEBUG=1)
+
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS}")
 message(STATUS "Compiling moor-ai-api with options ${CMAKE_MOOR_AI_FLAGS}")
 

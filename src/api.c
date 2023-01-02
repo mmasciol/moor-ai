@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "def.h"
+#include "sys.h"
 
 int api_hook() {
   printf("--> Inside DLL!\n");
@@ -18,6 +19,9 @@ int api_allocate_domain(Domain **d) {
 
 int api_free_domain(Domain **d) {
   printf("--> Free Domain DLL!\n");
-  *d = malloc(sizeof(Domain));
+  if (*d) {
+    checkpoint();
+    free(*d);
+  }
   return 0;
 }
