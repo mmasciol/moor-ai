@@ -3,16 +3,12 @@ project(moor-ai LANGUAGES CXX)
 
 include(CheckCXXCompilerFlag)
 
-check_cxx_compiler_flag("-m64" HAS_CXX_OSX)  # gcc/clang specific flags
-check_cxx_compiler_flag("/GS" HAS_CXX_WIN)  # MSVS specific flags
-
-if(HAS_CXX_OSX)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_MOOR_AI_FLAGS "${CMAKE_MOOR_AI_FLAGS} -O3 -g -ggdb3 -fPIC -cpp")
     set(CMAKE_MOOR_AI_LINKER_FLAGS "${CMAKE_MOOR_AI_LINKER_FLAGS} -O3 -shared -g")
-elseif(HAS_CXX_WIN)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /O3")
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    message(ERROR "GCC compiler unsupported")
 endif()
-
 
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS}")
 message(STATUS "Compiling moor-ai-api with options ${CMAKE_MOOR_AI_FLAGS}")
