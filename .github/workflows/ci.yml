@@ -95,6 +95,4 @@ jobs:
         run: |
           chmod +x ./bin/*
           chmod +x ./build/*
-          make install-moor-ai
-          mv ./python/moor_ai/libmoor-ai.so /usr/libmoor-ai.so
-          make python-test
+          make install-moor-ai && make python-test
