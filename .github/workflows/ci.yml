@@ -89,13 +89,11 @@ jobs:
         with:
           name: build
           path: build
+      # - name: build python environment
+      #   run: |
+      #     chmod +x ./bin/*
+      #     make install-moor-ai
+      #     make python-venv
       - name: build python environment
         run: |
-          chmod +x ./bin/*
-          make install-moor-ai
-          make python-venv
-      - name: build python environment
-        run: |
-          chmod +x ./.ci-venv/*
-          chmod +x /github/home/.cache/pip
           make python-test
