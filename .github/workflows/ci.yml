@@ -96,4 +96,4 @@ jobs:
           chmod +x ./bin/*
           chmod +x ./build/*
           make install-moor-ai && make python-venv && cd python/dist && pip install *.whl
-          make python-test
+          python -m python.moor_ai.test_api
