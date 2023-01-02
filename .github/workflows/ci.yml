@@ -24,7 +24,9 @@ jobs:
       - name: build
         run: make install-dependencies
       - name: compile
-        run: make compile-moor-ai
+        run: |
+          make compile-moor-ai
+          make install-moor-ai
       - name: archive binary artifact
         uses: actions/upload-artifact@v3
         with:
@@ -66,3 +68,29 @@ jobs:
         run: |
           chmod +x ./bin/*
 #          make test-memory-check
+
+  test-python:
+    needs: [build]
+    runs-on: ubuntu-latest
+    container:
+      image: mdmasciola/moor-ai:0.0.1
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - name: download binary artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: binaries
+          path: bin
+      - name: download build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: build
+          path: build
+      - name: build python environment
+        run: |
+          chmod +x ./bin/*
+          make install-moor-ai
+          make python-venv

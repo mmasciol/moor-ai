@@ -5,7 +5,9 @@ SHELL := /bin/bash -o pipefail
 python-venv:
 	pip install virtualenv
 	virtualenv .ci-venv
+	source .ci-venv/bin/activate
 	.ci-venv/bin/pip install -r requirements.txt
+	pip install ./python
 
 .PHONY: install-dependencies
 install-dependencies:
@@ -16,6 +18,9 @@ install-dependencies:
 compile-moor-ai:
 	cmake -DYAML_BUILD_SHARED_LIBS=ON -B build
 	make -C ./build -j4
+
+.PHONY: install-moor-ai
+install-moor-ai:
 	cmake --install ./build/
 
 # .PHONY: test-memory-check

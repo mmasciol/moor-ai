@@ -5,11 +5,23 @@ from ctypes import (
     c_int
 )
 import os
+import platform
 import sys
 
 
+if platform.system() == 'Linux':
+    ext = '.so'
+elif platform.system() == 'Darwin':
+    ext = '.dylib'
+else:
+    raise OSError('Unsupported operating system')
+
+
+lib_name = 'libmoor-ai{}'.format(ext)
+
+
 class Domain(object):
-    _lib = cdll.LoadLibrary(os.path.join(sys.prefix, 'libmoor-ai.dylib'))
+    _lib = cdll.LoadLibrary(os.path.join(sys.prefix, lib_name))
 
     _lib.api_hook.restype = c_int
 

@@ -2,9 +2,19 @@
 # -*- coding: utf-8 -*-
 from codecs import open  # To use a consistent encoding
 from os import path
+import platform
 from setuptools import setup, find_packages
 
 
+if platform.system() == 'Linux':
+    ext = '.so'
+elif platform.system() == 'Darwin':
+    ext = '.dylib'
+else:
+    raise OSError('Unsupported operating system')
+
+
+lib_path = 'moor_ai/libmoor-ai{}'.format(ext)
 here = path.abspath(path.dirname(__file__))
 
 
@@ -35,5 +45,5 @@ setup(
     # include_package_data=True,
     # package_data={'':['../bin/*.dylib']}
     # datas=[('../bin/libmoor-ai.dylib', '.')]
-    data_files = [('', ['moor_ai/libmoor-ai.dylib'])]
+    data_files = [('', [lib_path])]
 )
