@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int api_hook() {
+int api_allocate() {
   printf("--> Inside DLL!\n");
   return 0;
 }
