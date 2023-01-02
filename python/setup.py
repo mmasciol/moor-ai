@@ -14,7 +14,7 @@ else:
     raise OSError('Unsupported operating system')
 
 
-lib_path = 'moor_ai/libmoor-ai{}'.format(ext)
+lib_path = './moor_ai/libmoor-ai{}'.format(ext)
 here = path.abspath(path.dirname(__file__))
 
 
@@ -45,5 +45,5 @@ setup(
     # include_package_data=True,
     # package_data={'':['../bin/*.dylib']}
     # datas=[('../bin/libmoor-ai.dylib', '.')]
-    data_files = [('', [lib_path])]
+    data_files=[('', [lib_path])]
 )
