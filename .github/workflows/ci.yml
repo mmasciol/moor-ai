@@ -96,4 +96,5 @@ jobs:
       #     make python-venv
       - name: build python environment
         run: |
+          make install-moor-ai
           make python-test
