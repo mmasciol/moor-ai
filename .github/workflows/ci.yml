@@ -90,10 +90,9 @@ jobs:
           name: build
           path: build
       - name: build python environment
-        run: make install-moor-ai
-      - name: build python environment
         run: |
           chmod +x ./bin/*
           chmod +x ./build/*
           make install-moor-ai && make python-venv && cd python/dist && pip install *.whl
-          cd python && python -m moor_ai.test_api
+      - name: run python unit test
+        run: make python-test

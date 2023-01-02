@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 
+#include "def.h"
+
 int api_hook() {
   printf("--> Inside DLL!\n");
   return 0;
@@ -9,5 +11,12 @@ int api_hook() {
 
 int api_allocate_domain(struct Domain **d) {
   printf("--> Outside DLL!\n");
+  *d = malloc(sizeof(Domain));
+  return 0;
+}
+
+int api_free_domain(struct Domain **d) {
+  printf("--> Free Domain DLL!\n");
+  *d = malloc(sizeof(Domain));
   return 0;
 }
