@@ -33,13 +33,12 @@ class Domain(object):
     except OSError:
         _lib = cdll.LoadLibrary(os.path.join('./bin/', lib_name))
 
-    _lib.api_hook.restype = c_int
     _lib.api_allocate_domain.restype = c_int
     _lib.api_free_domain.restype = c_int
 
     _lib.api_allocate_domain.argtype = [POINTER(Obj)]  # type: ignore
     _lib.api_free_domain.argtype = [POINTER(Obj)]  # type: ignore
 
-    def run(self) -> None:
+    def allocate(self) -> None:
         size = self._lib.api_hook()
         print(size)
