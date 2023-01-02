@@ -26,4 +26,4 @@ install-moor-ai:
 .PHONY: python-test
 python-test:
 	source ci-venv/bin/activate
-    python -m python.moor_ai.test_api
+	python -m python.moor_ai.test_api
