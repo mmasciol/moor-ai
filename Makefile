@@ -21,5 +21,6 @@ install-moor-ai:
 
 .PHONY: python-test
 python-test:
-	pip install --user ./python
+	cd python
+	pip install --user .
 	python -m python.moor_ai.test_api
