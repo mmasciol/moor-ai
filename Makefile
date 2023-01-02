@@ -7,7 +7,6 @@ python-venv:
 	virtualenv ci-venv
 	source ci-venv/bin/activate
 	pip install -r requirements.txt
-	pip install ./python
 
 .PHONY: install-dependencies
 install-dependencies:
@@ -26,4 +25,5 @@ install-moor-ai:
 .PHONY: python-test
 python-test:
 	source ci-venv/bin/activate
+	pip install ./python
 	python -m python.moor_ai.test_api
