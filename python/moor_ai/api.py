@@ -40,7 +40,7 @@ class Interface(object):
     try:
         _lib = cdll.LoadLibrary(os.path.join(sys.prefix, lib_name))
     except OSError:
-        _lib = cdll.LoadLibrary(os.path.join('../bin/', lib_name))
+        _lib = cdll.LoadLibrary(os.path.join('./bin/', lib_name))
 
     _lib.api_allocate_domain.restype = c_int
     _lib.api_free_domain.restype = c_int
