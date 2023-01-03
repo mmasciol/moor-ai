@@ -1,26 +1,23 @@
 #ifndef MOOR_AI_SYS_H
 #define MOOR_AI_SYS_H
 
-#include <stdio.h>
-#include <unistd.h>
-
 #ifndef BUILD_DEFS_H
 #define BUILD_DEFS_H
 #define BUILD_YEAR_CH0 (__DATE__[7])
 #define BUILD_YEAR_CH1 (__DATE__[8])
 #define BUILD_YEAR_CH2 (__DATE__[9])
 #define BUILD_YEAR_CH3 (__DATE__[10])
-#define BUILD_MONTH_IS_JAN \
+#define BUILD_MONTH_IS_JAN                                                     \
   (__DATE__[0] == 'J' && __DATE__[1] == 'a' && __DATE__[2] == 'n')
 #define BUILD_MONTH_IS_FEB (__DATE__[0] == 'F')
-#define BUILD_MONTH_IS_MAR \
+#define BUILD_MONTH_IS_MAR                                                     \
   (__DATE__[0] == 'M' && __DATE__[1] == 'a' && __DATE__[2] == 'r')
 #define BUILD_MONTH_IS_APR (__DATE__[0] == 'A' && __DATE__[1] == 'p')
-#define BUILD_MONTH_IS_MAY \
+#define BUILD_MONTH_IS_MAY                                                     \
   (__DATE__[0] == 'M' && __DATE__[1] == 'a' && __DATE__[2] == 'y')
-#define BUILD_MONTH_IS_JUN \
+#define BUILD_MONTH_IS_JUN                                                     \
   (__DATE__[0] == 'J' && __DATE__[1] == 'u' && __DATE__[2] == 'n')
-#define BUILD_MONTH_IS_JUL \
+#define BUILD_MONTH_IS_JUL                                                     \
   (__DATE__[0] == 'J' && __DATE__[1] == 'u' && __DATE__[2] == 'l')
 #define BUILD_MONTH_IS_AUG (__DATE__[0] == 'A' && __DATE__[1] == 'u')
 #define BUILD_MONTH_IS_SEP (__DATE__[0] == 'S')
@@ -35,7 +32,7 @@
 #endif
 
 #ifdef DEBUG
-#define checkpoint() \
+#define checkpoint()                                                           \
   printf("Checkpoint: Line %d in file %s\n", __LINE__, __FILE__);
 #else
 #define checkpoint()
@@ -44,11 +41,16 @@
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-#define CHECKERR(code)                               \
-  do {                                               \
-    if (*ierr != SAFE) {                             \
-      ierr_set(msg, ierr, code, __FILE__, __LINE__); \
-    }                                                \
+#define CHECKERR(code)                                                         \
+  do {                                                                         \
+    if (*ierr != SAFE) {                                                       \
+      ierr_set(msg, ierr, code, __FILE__, __LINE__);                           \
+    }                                                                          \
+  } while (0);
+
+#define CHECKERRQ(code, string)                                                \
+  do {                                                                         \
+    ierr_msg_set(msg, ierr, code, __FILE__, __LINE__, string);                 \
   } while (0);
 
 #endif /* MOOR_AI_SYS_H */

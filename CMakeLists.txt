@@ -41,8 +41,8 @@ set_target_properties(yaml-cpp-parse PROPERTIES FOLDER "yaml-cpp")
 set_target_properties(yaml-cpp-read PROPERTIES FOLDER "yaml-cpp")
 set_target_properties(yaml-cpp-sandbox PROPERTIES FOLDER "yaml-cpp")
 
-# target_include_directories(bstring
-#     PRIVATE  "${PROJECT_BINARY_DIR}/pkg/bstring")
+target_include_directories(moor-ai
+    PRIVATE  "${CMAKE_BINARY_DIR}/../pkg/bstring")
 
 install(TARGETS moor-ai
         LIBRARY DESTINATION ${CMAKE_BINARY_DIR}/../python/moor_ai)
