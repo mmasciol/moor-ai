@@ -27,20 +27,18 @@ lib_name = 'libmoor-ai{}'.format(
     ext)
 
 
-class DomainTag(Structure):
+class Domain(Structure):
     def __init__(self, obj, name=''):
         self.obj = obj
     _fields_ = [
         ('label', POINTER(c_char_p))]
 
 
-class Domain(object):
-    domain = (
-        c_void_p * 1)()
+class Interface(object):
+    domain = (c_void_p * 1)()
 
     try:
-        _lib = cdll.LoadLibrary(
-            os.path.join(sys.prefix, lib_name))
+        _lib = cdll.LoadLibrary(os.path.join(sys.prefix, lib_name))
     except OSError:
         _lib = cdll.LoadLibrary(
             os.path.join('../bin/', lib_name))
@@ -48,8 +46,9 @@ class Domain(object):
     _lib.api_allocate_domain.restype = c_int
     _lib.api_free_domain.restype = c_int
 
-    _lib.api_allocate_domain.argtype = [POINTER(DomainTag)]  # type: ignore
-    _lib.api_free_domain.argtype = [POINTER(DomainTag)]  # type: ignore
+    _lib.api_allocate_domain.argtype = [  # type: ignore
+        POINTER(Domain), c_char_p]
+    _lib.api_free_domain.argtype = [POINTER(Domain), c_char_p]  # type: ignore
 
     def allocate(self) -> None:
         size = self._lib.api_allocate_domain(byref(self.domain))
