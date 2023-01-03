@@ -37,13 +37,11 @@ repos:
     -   id: flake8
         exclude: ^proposal/
         additional_dependencies: [pep8-naming]
-
 -   repo: https://github.com/pocc/pre-commit-hooks
     rev: master
     hooks:
       - id: clang-format
         args: [--style=file]
-      #  args: [--style=Google]
       # - id: clang-tidy
       # - id: oclint
       # - id: uncrustify

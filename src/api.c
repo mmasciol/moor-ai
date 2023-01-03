@@ -3,23 +3,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "api.h"
 #include "def.h"
 #include "sys.h"
 
-int api_hook()
-{
-  printf("--> Inside DLL!\n");
-  return 0;
-}
-
-int api_allocate_domain(Domain **d)
+ERROR_CODE api_allocate_domain(Domain **d, char *msg)
 {
   printf("--> Outside DLL!\n");
   *d = malloc(sizeof(Domain));
   return 0;
 }
 
-int api_free_domain(Domain **d)
+ERROR_CODE api_free_domain(Domain **d, char *msg)
 {
   printf("--> Free Domain DLL!\n");
   if (*d) {

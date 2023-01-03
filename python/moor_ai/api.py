@@ -19,25 +19,31 @@ if platform.system() == 'Linux':
 elif platform.system() == 'Darwin':
     ext = '.dylib'
 else:
-    raise OSError('Unsupported operating system')
+    raise OSError(
+        'Unsupported operating system')
 
 
-lib_name = 'libmoor-ai{}'.format(ext)
+lib_name = 'libmoor-ai{}'.format(
+    ext)
 
 
 class DomainTag(Structure):
     def __init__(self, obj, name=''):
         self.obj = obj
-    _fields_ = [('label', POINTER(c_char_p))]
+    _fields_ = [
+        ('label', POINTER(c_char_p))]
 
 
 class Domain(object):
-    domain = (c_void_p * 1)()
+    domain = (
+        c_void_p * 1)()
 
     try:
-        _lib = cdll.LoadLibrary(os.path.join(sys.prefix, lib_name))
+        _lib = cdll.LoadLibrary(
+            os.path.join(sys.prefix, lib_name))
     except OSError:
-        _lib = cdll.LoadLibrary(os.path.join('../bin/', lib_name))
+        _lib = cdll.LoadLibrary(
+            os.path.join('../bin/', lib_name))
 
     _lib.api_allocate_domain.restype = c_int
     _lib.api_free_domain.restype = c_int
