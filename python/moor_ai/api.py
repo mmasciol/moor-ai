@@ -5,6 +5,7 @@ from ctypes import (
     c_char_p,
     cdll,
     c_int,
+    c_void_p,
     POINTER,
     Structure
 )
@@ -31,13 +32,12 @@ class DomainTag(Structure):
 
 
 class Domain(object):
-    # domain = POINTER(DomainTag)
-    domain = (POINTER(DomainTag) * 1)()
+    domain = (c_void_p * 1)()
 
     try:
         _lib = cdll.LoadLibrary(os.path.join(sys.prefix, lib_name))
     except OSError:
-        _lib = cdll.LoadLibrary(os.path.join('./bin/', lib_name))
+        _lib = cdll.LoadLibrary(os.path.join('../bin/', lib_name))
 
     _lib.api_allocate_domain.restype = c_int
     _lib.api_free_domain.restype = c_int
