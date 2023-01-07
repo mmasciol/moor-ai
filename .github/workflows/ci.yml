@@ -63,10 +63,12 @@ jobs:
       - name: test execution
         run: |
           chmod +x ./bin/*
+          chmod +x ./bin/test/*
           make test-exe
       - name: test memory leaks
         run: |
           chmod +x ./bin/*
+          chmod +x ./bin/test/*
           make test-memory-check
 
   test-python:
