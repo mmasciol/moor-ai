@@ -3,9 +3,12 @@ project(moor-ai VERSION 0.1.0)
 
 include(CheckCXXCompilerFlag)
 
+enable_testing()
+
 add_subdirectory("./pkg/bstring")
 add_subdirectory("./pkg/yaml-cpp")
 add_subdirectory("./src")
+add_subdirectory("./test/entry")
 
 set_target_properties(yaml-cpp
     PROPERTIES
@@ -40,6 +43,25 @@ set_target_properties(yaml-cpp PROPERTIES FOLDER "yaml-cpp")
 set_target_properties(yaml-cpp-parse PROPERTIES FOLDER "yaml-cpp")
 set_target_properties(yaml-cpp-read PROPERTIES FOLDER "yaml-cpp")
 set_target_properties(yaml-cpp-sandbox PROPERTIES FOLDER "yaml-cpp")
+
+
+
+add_test (NAME test-entry  COMMAND test-entry)
+#     --build-and-test "${CMAKE_SOURCE_DIR}/test/entry"
+#                      "${CMAKE_BINARY_DIR}/test/entry"
+#    --build-generator ${CMAKE_GENERATOR}
+#    --build-makeprogram ${CMAKE_MAKE_PROGRAM}
+#    --build-project Simple
+#    --test-command simple)
+#
+# set (passRegex "^Test passed" "^All ok")
+# set (failRegex "Error" "Fail")
+# set_property (TEST test-entry
+#               PROPERTY PASS_REGULAR_EXPRESSION "${passRegex}")
+# set_property (TEST test-entry
+#               PROPERTY FAIL_REGULAR_EXPRESSION "${failRegex}")
+#
+
 
 target_include_directories(moor-ai
     PRIVATE  "${CMAKE_BINARY_DIR}/../pkg/bstring")
