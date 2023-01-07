@@ -23,3 +23,11 @@ install:
 .PHONY: python-test
 python-test:
 	python -m python.moor_ai.test_api
+
+.PHONY: test-exe
+test-exe:
+	./bin/test/test-entry
+
+.PHONY: test-memory-check
+test-memory-check:
+	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --track-origins=yes --error-exitcode=1 --leak-check=full ./bin/test/test-entry
