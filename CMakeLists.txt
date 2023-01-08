@@ -55,8 +55,8 @@ target_include_directories(moor-ai
 target_include_directories(test-entry
     PRIVATE  "${CMAKE_BINARY_DIR}/../src")
 
-# target_include_directories(c-yaml
-#     PRIVATE  "${CMAKE_BINARY_DIR}/../pkg/yaml/include")
+target_include_directories(moor-ai
+    PRIVATE  "${CMAKE_BINARY_DIR}/../pkg/yaml/include")
 
 install(TARGETS moor-ai
         LIBRARY DESTINATION ${CMAKE_BINARY_DIR}/../python/moor_ai)
