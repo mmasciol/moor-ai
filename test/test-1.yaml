@@ -1,3 +1,4 @@
+info: "information about this yaml file"
 line_properties:
   - label: "chain"
     outer_diameter: 0.8

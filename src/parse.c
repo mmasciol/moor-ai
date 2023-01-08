@@ -32,8 +32,8 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
 
   do {
     if (!yaml_parser_parse(&parser, &event)) {
-      printf("Parser error %d\n", parser.error);
-      exit(EXIT_FAILURE);
+      message = bformat("Parser error %d\n", parser.error);
+      EMITERRQ(FATAL, (const char *)message->data);
     }
 
     switch (event.type) {
@@ -63,10 +63,10 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
       // puts("<b>End Sequence</b>");
       break;
     case YAML_MAPPING_START_EVENT:
-      // puts("<b>Start Mapping</b>");
+      puts("  <b>Start Mapping</b>");
       break;
     case YAML_MAPPING_END_EVENT:
-      puts("<b>End Mapping</b>");
+      puts("  <b>End Mapping</b>");
       break;
 
     /* Data */
@@ -74,7 +74,7 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
       // printf("Got alias (anchor %s)\n", event.data.alias.anchor);
       break;
     case YAML_SCALAR_EVENT:
-      printf("Got scalar (value %s)\n", event.data.scalar.value);
+      printf("    Got scalar (value %s)\n", event.data.scalar.value);
       break;
     }
 
