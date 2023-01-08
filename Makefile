@@ -13,7 +13,7 @@ install-dependencies:
 
 .PHONY: compile
 compile:
-	cmake -DYAML_BUILD_SHARED_LIBS=ON -B build
+	cmake -B build
 	make -C ./build -j4
 
 .PHONY: install

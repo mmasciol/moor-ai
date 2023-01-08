@@ -23,4 +23,4 @@ set_source_files_properties(${_SRC} PROPERTIES COMPILE_FLAGS "${CMAKE_MOOR_AI_FL
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_MOOR_AI_LINKER_FLAGS}")
 
 add_library(moor-ai SHARED ${_SRC} ${_HDR})
-target_link_libraries(moor-ai bstring yaml-cpp yaml-c-wrapper)
+target_link_libraries(moor-ai bstring)

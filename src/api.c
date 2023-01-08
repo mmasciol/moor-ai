@@ -8,7 +8,6 @@
 #include "bstrlib.h"
 #include "def.h"
 #include "sys.h"
-#include "yaml-c-wrap/api.h"
 
 ERROR_CODE api_allocate_domain(void **d, char **msg)
 {
@@ -61,8 +60,8 @@ ERROR_CODE api_read_yaml_file(void **d, char *fpath, char **msg)
   CHECKERRQ(INFO, message->data);
   bdestroy(message);
 
-  yaml = yaml_open_file(fpath);
-  yaml_close_file(yaml);
+  // yaml = yaml_open_file(fpath);
+  // yaml_close_file(yaml);
 
   return ierr;
 CLEAN_UP:
