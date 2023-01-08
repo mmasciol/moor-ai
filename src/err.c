@@ -65,22 +65,22 @@ ERROR_CODE ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
 
   switch (new_ierr) {
   case SAFE:
-    prefix = bformat("[SAFE]");
+    prefix = bformat("[SAFE   ]");
     break;
   case VERBOSE:
     prefix = bformat("[VERBOSE]");
     break;
   case INFO:
-    prefix = bformat("[INFO]");
+    prefix = bformat("[INFO   ]");
     break;
   case WARNING:
     prefix = bformat("[WARNING]");
     break;
   case ERROR:
-    prefix = bformat("[ERROR]");
+    prefix = bformat("[ERROR  ]");
     break;
   case FATAL:
-    prefix = bformat("[FATAL]");
+    prefix = bformat("[FATAL  ]");
     break;
   }
 

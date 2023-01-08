@@ -5,8 +5,10 @@
 #include <string.h>
 
 #include "api.h"
+#include "bstrlib.h"
 #include "def.h"
 #include "sys.h"
+#include "yaml-c-wrap/api.h"
 
 ERROR_CODE api_allocate_domain(void **d, char **msg)
 {
@@ -15,6 +17,7 @@ ERROR_CODE api_allocate_domain(void **d, char **msg)
 
   *msg = (char *)malloc(1024 * sizeof(char));
   RESETERR();
+  CHECKERRQ(VERBOSE, __func__);
 
   *d = malloc(sizeof(Domain));
 
@@ -31,6 +34,7 @@ ERROR_CODE api_free_domain(void **d, char **msg)
   ERROR_CODE ierr = SAFE;
 
   RESETERR();
+  CHECKERRQ(VERBOSE, __func__);
 
   CHECKERRQ(VERBOSE, "Deallocated domain");
   CHECKERRQ(ERROR, "second domain");
@@ -44,11 +48,33 @@ CLEAN_UP:
   return FATAL;
 }
 
+ERROR_CODE api_read_yaml_file(void **d, char *fpath, char **msg)
+{
+  ERROR_CODE ierr = SAFE;
+  bstring message = NULL;
+  void *yaml = NULL;
+
+  RESETERR();
+  CHECKERRQ(VERBOSE, __func__);
+
+  message = bformat("Reading *.yaml file <%s>", fpath);
+  CHECKERRQ(INFO, message->data);
+  bdestroy(message);
+
+  yaml = yaml_open_file(fpath);
+  yaml_close_file(yaml);
+
+  return ierr;
+CLEAN_UP:
+  return FATAL;
+}
+
 ERROR_CODE api_flush_msg(char **msg)
 {
   ERROR_CODE ierr = SAFE;
 
   RESETERR();
+  CHECKERRQ(VERBOSE, __func__);
 
   if (*msg) {
     free(*msg);

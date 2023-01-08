@@ -15,6 +15,9 @@ int main()
   err = api_allocate_domain(&domain, &msg);
   CHECKERR(err, msg);
 
+  err = api_read_yaml_file(&domain, "./test/test-1.yaml", &msg);
+  CHECKERR(err, msg);
+
   err = api_free_domain(&domain, &msg);
   CHECKERR(err, msg);
 
