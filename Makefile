@@ -13,7 +13,7 @@ install-dependencies:
 
 .PHONY: compile
 compile:
-	cmake -B build
+	cmake -B build -DBUILD_SHARED_LIBS=ON
 	make -C ./build -j4
 
 .PHONY: install
