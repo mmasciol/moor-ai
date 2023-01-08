@@ -13,6 +13,7 @@ ERROR_CODE api_allocate_domain(void **d, char **msg)
   ERROR_CODE ierr = SAFE;
   *msg = NULL;
   *msg = (char *)malloc(1024 * sizeof(char));
+  *msg[0] = '\0';
 
   *d = malloc(sizeof(Domain));
 

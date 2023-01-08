@@ -19,7 +19,7 @@ void ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
   if (!msg) {
     message = bformat("");
   } else {
-    message = bformat("%s", msg);
+    message = bformat("%s", *msg);
   }
 
   /* This is a re-implementation of the bstring library routines 'bformat(...)
