@@ -38,32 +38,32 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
 
     switch (event.type) {
     case YAML_NO_EVENT:
-      puts("No event!");
+      // puts("No event!");
       break;
 
     /* Stream start/end */
     case YAML_STREAM_START_EVENT:
-      puts("STREAM START");
+      // puts("STREAM START");
       break;
     case YAML_STREAM_END_EVENT:
-      puts("STREAM END");
+      // puts("STREAM END");
       break;
 
     /* Block delimeters */
     case YAML_DOCUMENT_START_EVENT:
-      puts("<b>Start Document</b>");
+      // puts("<b>Start Document</b>");
       break;
     case YAML_DOCUMENT_END_EVENT:
-      puts("<b>End Document</b>");
+      // puts("<b>End Document</b>");
       break;
     case YAML_SEQUENCE_START_EVENT:
-      puts("<b>Start Sequence</b>");
+      // puts("<b>Start Sequence</b>");
       break;
     case YAML_SEQUENCE_END_EVENT:
-      puts("<b>End Sequence</b>");
+      // puts("<b>End Sequence</b>");
       break;
     case YAML_MAPPING_START_EVENT:
-      puts("<b>Start Mapping</b>");
+      // puts("<b>Start Mapping</b>");
       break;
     case YAML_MAPPING_END_EVENT:
       puts("<b>End Mapping</b>");
@@ -71,7 +71,7 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
 
     /* Data */
     case YAML_ALIAS_EVENT:
-      printf("Got alias (anchor %s)\n", event.data.alias.anchor);
+      // printf("Got alias (anchor %s)\n", event.data.alias.anchor);
       break;
     case YAML_SCALAR_EVENT:
       printf("Got scalar (value %s)\n", event.data.scalar.value);
@@ -89,7 +89,6 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
 
   return ierr;
 CLEAN_UP:
-  yaml_event_delete(&event);
   yaml_parser_delete(&parser);
   bdestroy(message);
   return FATAL;
