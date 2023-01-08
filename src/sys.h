@@ -47,6 +47,12 @@ typedef double ufloat_t;
 typedef float ufloat_t;
 #endif
 
+#define DEALLOCATE(obj)                                                        \
+  if (obj) {                                                                   \
+    free(obj);                                                                 \
+    obj = NULL;                                                                \
+  }
+
 #define CHECKERRQ(code, string)                                                \
   do {                                                                         \
     if (WARNING < ierr) {                                                      \
