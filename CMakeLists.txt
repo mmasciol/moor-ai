@@ -63,3 +63,6 @@ install(TARGETS moor-ai
 
 install(TARGETS bstring
         LIBRARY DESTINATION ${CMAKE_BINARY_DIR}/../python/moor_ai)
+
+install(TARGETS yaml
+        LIBRARY DESTINATION ${CMAKE_BINARY_DIR}/../python/moor_ai)

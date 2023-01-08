@@ -55,7 +55,7 @@ class Interface(object):
     _lib.api_free_domain.argtype = [POINTER(Domain), c_char_p]  # type: ignore
 
     def _check_err(self, ierr: int) -> None:
-        if ierr != 0:
+        if ierr != 0 and self.msg[0]:
             print(self.msg[0].decode())  # type: ignore
 
     def allocate(self) -> None:
