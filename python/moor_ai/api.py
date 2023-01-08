@@ -22,8 +22,7 @@ else:
         'Unsupported operating system')
 
 
-lib_name = 'libmoor-ai{}'.format(
-    ext)
+lib_name = 'libmoor-ai{}'.format(ext)
 
 
 class Domain(Structure):
@@ -40,7 +39,11 @@ class Interface(object):
     try:
         _lib = cdll.LoadLibrary(os.path.join(sys.prefix, lib_name))
     except OSError:
-        _lib = cdll.LoadLibrary(os.path.join('./bin/', lib_name))
+        lpath_default: str = os.path.join('./bin/', lib_name)
+        if os.path.exists(lpath_default):
+            _lib = cdll.LoadLibrary(lpath_default)
+        else:
+            _lib = cdll.LoadLibrary(os.path.join('../bin/', lib_name))
 
     _lib.api_allocate_domain.restype = c_int
     _lib.api_free_domain.restype = c_int
