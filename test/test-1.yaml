@@ -1,0 +1,13 @@
+line_properties:
+  - label: "chain"
+    outer_diameter: 0.8
+    inner_diameter: 0.1
+    stiffness: 900
+    damping: 232
+    mass_per_length: 3
+  - label: "rope"
+    outer_diameter: 0.1
+    inner_diameter: 0.0
+    stiffness: 893
+    damping: 3
+    mass_per_length: 21
