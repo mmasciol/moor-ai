@@ -12,8 +12,9 @@ ERROR_CODE api_allocate_domain(void **d, char **msg)
 {
   ERROR_CODE ierr = SAFE;
   *msg = NULL;
+
   *msg = (char *)malloc(1024 * sizeof(char));
-  *msg[0] = '\0';
+  RESETERR();
 
   *d = malloc(sizeof(Domain));
 
@@ -29,28 +30,31 @@ ERROR_CODE api_free_domain(void **d, char **msg)
 {
   ERROR_CODE ierr = SAFE;
 
+  RESETERR();
+
   CHECKERRQ(VERBOSE, "Deallocated domain");
-  printf("%d\n", ierr);
   CHECKERRQ(ERROR, "second domain");
-  printf("%d\n", ierr);
   CHECKERRQ(FATAL, "another domain");
-  printf("%d\n", ierr);
 
   if (*d) {
     free(*d);
   }
-  return SAFE;
+  return ierr;
 CLEAN_UP:
   return FATAL;
 }
 
 ERROR_CODE api_flush_msg(char **msg)
 {
+  ERROR_CODE ierr = SAFE;
+
+  RESETERR();
+
   if (*msg) {
     free(*msg);
     *msg = NULL;
   }
-  return SAFE;
+  return ierr;
 CLEAN_UP:
   return FATAL;
 }

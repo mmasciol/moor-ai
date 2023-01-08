@@ -46,4 +46,8 @@
     ierr = ierr_msg_set(msg, ierr, code, __FILE__, __LINE__, string);          \
   } while (0);
 
+#define RESETERR()                                                             \
+  ierr = SAFE;                                                                 \
+  *msg[0] = '\0';
+
 #endif /* MOOR_AI_SYS_H */

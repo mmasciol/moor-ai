@@ -85,10 +85,8 @@ ERROR_CODE ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
   }
 
   if (new_ierr < ierr) {
-    checkpoint();
     ret_ierr = ierr;
   } else {
-    checkpoint();
     ret_ierr = new_ierr;
   }
 

@@ -54,16 +54,18 @@ class Interface(object):
     _lib.api_flush_msg.argtype = [c_char_p]  # type: ignore
     _lib.api_free_domain.argtype = [POINTER(Domain), c_char_p]  # type: ignore
 
+    def _check_err(self, ierr: int) -> None:
+        if ierr != 0:
+            print(self.msg[0].decode())  # type: ignore
+
     def allocate(self) -> None:
-        size = self._lib.api_allocate_domain(byref(self.domain), self.msg)
-        print(size)
+        ierr = self._lib.api_allocate_domain(byref(self.domain), self.msg)
+        self._check_err(ierr)
 
     def free(self) -> None:
-        size = self._lib.api_free_domain(byref(self.domain), self.msg)
-        if self.msg[0]:
-            print(self.msg[0].decode())  # type: ignore
-        print(size)
+        ierr = self._lib.api_free_domain(byref(self.domain), self.msg)
+        self._check_err(ierr)
 
     def flush_message(self) -> None:
-        size = self._lib.api_flush_msg(self.msg)
-        print(size)
+        ierr = self._lib.api_flush_msg(self.msg)
+        self._check_err(ierr)
