@@ -13,7 +13,7 @@ install-dependencies:
 
 .PHONY: compile
 compile:
-	cmake -B build -DBUILD_SHARED_LIBS=ON
+	cmake -B build -DMOOR_AI_DEBUG=ON -DMOOR_AI_DOUBLE_PRECISION=ON
 	make -C ./build -j4
 
 .PHONY: install

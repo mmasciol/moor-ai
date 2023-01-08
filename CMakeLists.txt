@@ -8,6 +8,9 @@ add_subdirectory("./pkg/yaml")
 add_subdirectory("./src")
 add_subdirectory("./test/entry")
 
+option(MOOR_AI_DOUBLE_PRECISION "Compile with double prevision" ON)
+option(MOOR_AI_DEBUG "Compile with debug output" OFF)
+
 set_target_properties(moor-ai
     PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../bin$<0:>  # for *.so

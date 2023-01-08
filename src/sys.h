@@ -41,6 +41,12 @@
 // #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 // #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
+#ifdef DOUBLE_PRECISION
+typedef double ufloat_t;
+#else
+typedef float ufloat_t;
+#endif
+
 #define CHECKERRQ(code, string)                                                \
   do {                                                                         \
     if (WARNING < ierr) {                                                      \

@@ -11,63 +11,86 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
   ERROR_CODE ierr = SAFE;
   bstring message = NULL;
   FILE *fh = NULL;
-
-  // yaml_parser_t parser;
-  // yaml_event_t  event;   /* New variable */
+  yaml_parser_t parser;
+  yaml_event_t event;
 
   EMITERRQ(STACK, __func__);
 
   fh = fopen(fpath, "r");
-  // /* Initialize parser */
-  // if(!yaml_parser_initialize(&parser))
-  //   fputs("Failed to initialize parser!\n", stderr);
-  checkpoint();
+
+  if (!yaml_parser_initialize(&parser)) {
+    message = bformat("Failed to initialize parser *.yaml file <%s>", fpath);
+    EMITERRQ(FATAL, (const char *)message->data);
+  }
+
   if (fh == NULL) {
     message = bformat("Failed to open *.yaml file <%s>", fpath);
     EMITERRQ(FATAL, (const char *)message->data);
   }
-  checkpoint();
 
-  // /* Set input file */
-  // yaml_parser_set_input_file(&parser, fh);
+  yaml_parser_set_input_file(&parser, fh);
 
-  // /* START new code */
-  // do {
-  //   if (!yaml_parser_parse(&parser, &event)) {
-  //      printf("Parser error %d\n", parser.error);
-  //      exit(EXIT_FAILURE);
-  //   }
+  do {
+    if (!yaml_parser_parse(&parser, &event)) {
+      printf("Parser error %d\n", parser.error);
+      exit(EXIT_FAILURE);
+    }
 
-  //   switch(event.type)
-  //   {
-  //   case YAML_NO_EVENT: puts("No event!"); break;
-  //   /* Stream start/end */
-  //   case YAML_STREAM_START_EVENT: puts("STREAM START"); break;
-  //   case YAML_STREAM_END_EVENT:   puts("STREAM END");   break;
-  //   /* Block delimeters */
-  //   case YAML_DOCUMENT_START_EVENT: puts("<b>Start Document</b>"); break;
-  //   case YAML_DOCUMENT_END_EVENT:   puts("<b>End Document</b>");   break;
-  //   case YAML_SEQUENCE_START_EVENT: puts("<b>Start Sequence</b>"); break;
-  //   case YAML_SEQUENCE_END_EVENT:   puts("<b>End Sequence</b>");   break;
-  //   case YAML_MAPPING_START_EVENT:  puts("<b>Start Mapping</b>");  break;
-  //   case YAML_MAPPING_END_EVENT:    puts("<b>End Mapping</b>");    break;
-  //   /* Data */
-  //   case YAML_ALIAS_EVENT:  printf("Got alias (anchor %s)\n", event.data.alias.anchor); break;
-  //   case YAML_SCALAR_EVENT: printf("Got scalar (value %s)\n", event.data.scalar.value); break;
-  //   }
-  //   if(event.type != YAML_STREAM_END_EVENT)
-  //     yaml_event_delete(&event);
-  // } while(event.type != YAML_STREAM_END_EVENT);
-  // yaml_event_delete(&event);
-  // /* END new code */
+    switch (event.type) {
+    case YAML_NO_EVENT:
+      puts("No event!");
+      break;
 
-  // /* Cleanup */
-  // yaml_parser_delete(&parser);
+    /* Stream start/end */
+    case YAML_STREAM_START_EVENT:
+      puts("STREAM START");
+      break;
+    case YAML_STREAM_END_EVENT:
+      puts("STREAM END");
+      break;
+
+    /* Block delimeters */
+    case YAML_DOCUMENT_START_EVENT:
+      puts("<b>Start Document</b>");
+      break;
+    case YAML_DOCUMENT_END_EVENT:
+      puts("<b>End Document</b>");
+      break;
+    case YAML_SEQUENCE_START_EVENT:
+      puts("<b>Start Sequence</b>");
+      break;
+    case YAML_SEQUENCE_END_EVENT:
+      puts("<b>End Sequence</b>");
+      break;
+    case YAML_MAPPING_START_EVENT:
+      puts("<b>Start Mapping</b>");
+      break;
+    case YAML_MAPPING_END_EVENT:
+      puts("<b>End Mapping</b>");
+      break;
+
+    /* Data */
+    case YAML_ALIAS_EVENT:
+      printf("Got alias (anchor %s)\n", event.data.alias.anchor);
+      break;
+    case YAML_SCALAR_EVENT:
+      printf("Got scalar (value %s)\n", event.data.scalar.value);
+      break;
+    }
+
+    if (event.type != YAML_STREAM_END_EVENT) {
+      yaml_event_delete(&event);
+    }
+  } while (event.type != YAML_STREAM_END_EVENT);
+  yaml_event_delete(&event);
+
+  yaml_parser_delete(&parser);
   fclose(fh);
 
   return ierr;
 CLEAN_UP:
+  yaml_event_delete(&event);
+  yaml_parser_delete(&parser);
   bdestroy(message);
-  checkpoint();
   return FATAL;
 }

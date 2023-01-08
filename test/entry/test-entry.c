@@ -6,6 +6,11 @@
 void yaml_file_read_failure();
 void yaml_file_read_success();
 
+#define TEST()                                                                 \
+  printf("\n\n--------------------\n");                                        \
+  printf("[TEST   ]   %s\n", __func__);                                        \
+  printf("--------------------\n");
+
 #define CHECKERR(code, s)                                                      \
   if (code && s)                                                               \
     printf("%s", s);
@@ -14,11 +19,13 @@ int main()
 {
   yaml_file_read_failure();
   yaml_file_read_success();
+
   return 0;
 }
 
 void yaml_file_read_failure()
 {
+  TEST();
   void *domain = NULL;
   char *msg = NULL;
   int err = -9999;
@@ -44,6 +51,7 @@ void yaml_file_read_failure()
 
 void yaml_file_read_success()
 {
+  TEST();
   void *domain = NULL;
   char *msg = NULL;
   int err = -9999;
