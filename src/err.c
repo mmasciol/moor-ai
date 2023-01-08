@@ -70,6 +70,9 @@ ERROR_CODE ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
   case VERBOSE:
     prefix = bformat("[VERBOSE]");
     break;
+  case STACK:
+    prefix = bformat("[STACK  ]");
+    break;
   case INFO:
     prefix = bformat("[INFO   ]");
     break;

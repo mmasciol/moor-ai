@@ -43,7 +43,17 @@
 
 #define CHECKERRQ(code, string)                                                \
   do {                                                                         \
+    if (WARNING < ierr) {                                                      \
+      EMITERRQ(code, string);                                                  \
+    }                                                                          \
+  } while (0);
+
+#define EMITERRQ(code, string)                                                 \
+  do {                                                                         \
     ierr = ierr_msg_set(msg, ierr, code, __FILE__, __LINE__, string);          \
+    if (WARNING < ierr) {                                                      \
+      goto CLEAN_UP;                                                           \
+    }                                                                          \
   } while (0);
 
 #define RESETERR()                                                             \
