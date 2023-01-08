@@ -8,18 +8,23 @@
 #include "def.h"
 #include "sys.h"
 
-ERROR_CODE api_allocate_domain(Domain **d, char **msg)
+ERROR_CODE api_allocate_domain(void **d, char **msg)
 {
+  ERROR_CODE ierr = SAFE;
   *msg = NULL;
   *msg = (char *)malloc(1024 * sizeof(char));
 
   *d = malloc(sizeof(Domain));
-  return SAFE;
+
+  // if (*d) {
+  //   CHECKERRQ(VERBOSE, "Allocated Domain");
+  // }
+  return ierr;
 CLEAN_UP:
   return FATAL;
 }
 
-ERROR_CODE api_free_domain(Domain **d, char **msg)
+ERROR_CODE api_free_domain(void **d, char **msg)
 {
   ERROR_CODE ierr = SAFE;
 

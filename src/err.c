@@ -11,10 +11,16 @@ void ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
   bstring prefix = NULL;
   bstring out_string = NULL;
   bstring user_msg = NULL;
-  bstring message = bformat("%s", *msg);
+  bstring message = NULL;
   const int START_VSNBUFF = 16;
   int r = 0;
   int n = 0;
+
+  if (!msg) {
+    message = bformat("");
+  } else {
+    message = bformat("%s", msg);
+  }
 
   /* This is a re-implementation of the bstring library routines 'bformat(...)
    * Take the variable argument list and create a string with it. This lets you
@@ -76,7 +82,6 @@ void ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
     break;
   }
 
-  // error_number = new_ierr-1;
   while (prefix->slen < 12) {
     bconchar(prefix, ' ');
   };
