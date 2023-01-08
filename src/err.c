@@ -4,8 +4,8 @@
 #include "err.h"
 #include "sys.h"
 
-void ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
-                 const char *file, int line, const char *in_string, ...)
+ERROR_CODE ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
+                       const char *file, int line, const char *in_string, ...)
 {
   va_list arglist;
   bstring prefix = NULL;
@@ -13,6 +13,8 @@ void ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
   bstring user_msg = NULL;
   bstring message = NULL;
   const int START_VSNBUFF = 16;
+  ERROR_CODE ret_ierr = SAFE;
+
   int r = 0;
   int n = 0;
 
@@ -54,7 +56,7 @@ void ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
       } else {
        n += n;
       };
-      if (0!=balloc(user_msg, n + 2)) {
+      if (0 != balloc(user_msg, n + 2)) {
        bdestroy(user_msg);
        break;
       };
@@ -82,6 +84,14 @@ void ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
     break;
   }
 
+  if (new_ierr < ierr) {
+    checkpoint();
+    ret_ierr = ierr;
+  } else {
+    checkpoint();
+    ret_ierr = new_ierr;
+  }
+
   while (prefix->slen < 12) {
     bconchar(prefix, ' ');
   };
@@ -95,6 +105,8 @@ void ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
   bdestroy(out_string);
   bdestroy(message);
   bdestroy(user_msg);
+
+  return ret_ierr;
 }
 
 void copy_string(char *tar, unsigned char *src)

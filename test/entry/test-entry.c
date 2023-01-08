@@ -3,7 +3,7 @@
 #include "api.h"
 
 #define CHECKERR(code, s)                                                      \
-  if (code)                                                                    \
+  if (code && s)                                                               \
     printf("%s", s);
 
 int main()
@@ -13,13 +13,13 @@ int main()
   int err = -9999;
 
   err = api_allocate_domain(&domain, &msg);
-  // CHECKERR(1, msg);
+  CHECKERR(err, msg);
 
   err = api_free_domain(&domain, &msg);
-  CHECKERR(1, msg);
+  CHECKERR(err, msg);
 
   err = api_flush_msg(&msg);
-  // CHECKERR(1, msg);
+  CHECKERR(err, msg);
 
   return 0;
 }

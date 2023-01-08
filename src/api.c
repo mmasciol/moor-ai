@@ -30,8 +30,11 @@ ERROR_CODE api_free_domain(void **d, char **msg)
   ERROR_CODE ierr = SAFE;
 
   CHECKERRQ(VERBOSE, "Deallocated domain");
+  printf("%d\n", ierr);
   CHECKERRQ(ERROR, "second domain");
+  printf("%d\n", ierr);
   CHECKERRQ(FATAL, "another domain");
+  printf("%d\n", ierr);
 
   if (*d) {
     free(*d);

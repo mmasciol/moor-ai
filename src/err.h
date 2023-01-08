@@ -10,8 +10,8 @@ typedef enum ERROR_CODE {
   FATAL,
 } ERROR_CODE;
 
-void ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
-                 const char *file, int line, const char *in_string, ...);
+ERROR_CODE ierr_msg_set(char **msg, ERROR_CODE ierr, const ERROR_CODE new_ierr,
+                       const char *file, int line, const char *in_string, ...);
 
 void copy_string(char *tar, unsigned char *src);
 

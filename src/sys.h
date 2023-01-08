@@ -38,19 +38,12 @@
 #define checkpoint()
 #endif
 
-#define MAX(x, y) (((x) > (y)) ? (x) : (y))
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
-
-#define CHECKERR(code)                                                         \
-  do {                                                                         \
-    if (*ierr != SAFE) {                                                       \
-      ierr_set(msg, ierr, code, __FILE__, __LINE__);                           \
-    }                                                                          \
-  } while (0);
+// #define MAX(x, y) (((x) > (y)) ? (x) : (y))
+// #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 #define CHECKERRQ(code, string)                                                \
   do {                                                                         \
-    ierr_msg_set(msg, ierr, code, __FILE__, __LINE__, string);                 \
+    ierr = ierr_msg_set(msg, ierr, code, __FILE__, __LINE__, string);          \
   } while (0);
 
 #endif /* MOOR_AI_SYS_H */
