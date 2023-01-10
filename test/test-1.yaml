@@ -17,5 +17,5 @@ line_properties:
     damping: 3
     mass_per_length: 21
 
-other_prop:
-  label: [8974387, 93, 4]
+# other_prop:
+#   label: [8974387, 93, 4]

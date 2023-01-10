@@ -15,6 +15,7 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
   // char *s = NULL;
   yaml_parser_t parser;
   yaml_event_t event;
+  ParserContainer container;
 
   EMITERRQ(STACK, __func__);
 
@@ -30,20 +31,24 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
     EMITERRQ(FATAL, (const char *)message->data);
   }
 
+  container.parser = &parser;
+  container.event = &event;
+  container.key = NULL;
+  container.bag = NULL;
+  container.nbag = 0;
   yaml_parser_set_input_file(&parser, fh);
-  ierr = parse_recurse_yaml(d, NULL, &parser, &event, msg);
-
+  ierr = parse_recurse_yaml(d, &container, msg);
   // do {
   //   if (!yaml_parser_parse(&parser, &event)) {
   //     message = bformat("Parser error [%d]", parser.error);
   //     EMITERRQ(FATAL, (const char *)message->data);
   //   }
-  // 
+  //
   //   switch (event.type) {
   //   case YAML_NO_EVENT:
   //     puts("No event!");
   //     break;
-  // 
+  //
   //   /* Stream start/end */
   //   case YAML_STREAM_START_EVENT:
   //     puts("STREAM START");
@@ -51,7 +56,7 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
   //   case YAML_STREAM_END_EVENT:
   //     puts("STREAM END");
   //     break;
-  // 
+  //
   //   /* Block delimeters */
   //   case YAML_DOCUMENT_START_EVENT:
   //     puts("<b>Start Document</b>");
@@ -72,7 +77,7 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
   //   case YAML_MAPPING_END_EVENT:
   //     puts("  <b>End Mapping</b>");
   //     break;
-  // 
+  //
   //   /* Data */
   //   case YAML_ALIAS_EVENT:
   //     // printf("Got alias (anchor %s)\n", event.data.alias.anchor);
@@ -85,7 +90,7 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
   //     printf("    Got scalar (value %s)\n", event.data.scalar.value);
   //     break;
   //   }
-  // 
+  //
   //   if (event.type != YAML_STREAM_END_EVENT) {
   //     yaml_event_delete(&event);
   //   }
@@ -98,148 +103,141 @@ ERROR_CODE parse_yaml(Domain *d, char *fpath, char **msg)
 
   return ierr;
 CLEAN_UP:
-  // DEALLOCATE(s); 
+  // DEALLOCATE(s);
   yaml_parser_delete(&parser);
   bdestroy(message);
   return FATAL;
 }
 
-ERROR_CODE parse_recurse_yaml(Domain *d, char *child, yaml_parser_t *p, yaml_event_t *e, char **msg)
+ERROR_CODE parse_recurse_yaml(Domain *d, ParserContainer *parent, char **msg)
 {
   ERROR_CODE ierr = SAFE;
   bstring message = NULL;
   int n = 0;
   char s[1024];
+  ParserContainer container;
   EMITERRQ(STACK, __func__);
 
-  printf("{ %s\n", child);
+  container.parser = parent->parser;
+  container.event = parent->event;
+  container.key = NULL;
+  container.bag = NULL;
+  container.nbag = 0;
+
   do {
-    if (!yaml_parser_parse(p, e)) {
-      message = bformat("Parser error [%d]", p->error);
+    if (!yaml_parser_parse(parent->parser, parent->event)) {
+      message = bformat("Parser error [%d]", parent->parser->error);
       EMITERRQ(FATAL, (const char *)message->data);
     }
 
-    switch (e->type) {
+    switch (parent->event->type) {
     case YAML_NO_EVENT:
-      //puts("No event!");
+      // puts("No event!");
       break;
 
     /* Stream start/end */
     case YAML_STREAM_START_EVENT:
-      //puts("STREAM START");
+      // puts("STREAM START");
       break;
     case YAML_STREAM_END_EVENT:
-      //puts("STREAM END");
+      // puts("STREAM END");
       break;
 
     /* Block delimeters */
     case YAML_DOCUMENT_START_EVENT:
-      //puts("<b>Start Document</b>");
+      // puts("<b>Start Document</b>");
       break;
     case YAML_DOCUMENT_END_EVENT:
-      //puts("<b>End Document</b>");
+      // puts("<b>End Document</b>");
       break;
     case YAML_SEQUENCE_START_EVENT:
-      //puts("<b>Start Sequence</b>");
+      puts("  <<Sequence Start>>");
+      if (container.bag) {
+        container.key = container.bag[container.nbag - 1];
+      } else {
+        container.key = parent->key;
+      }
+      ierr = parse_recurse_yaml(d, &container, msg);
+      CHECKERRQ(FATAL, "Error parsing *.yaml");
       break;
     case YAML_SEQUENCE_END_EVENT:
-      //puts("<b>End Sequence</b>");
+      if (1 < container.nbag) {
+        if (parent->key) {
+         printf("  %s:\n", parent->key);
+        }
+      }
+      // printf("    %s:  ", container.bag[0]);
+      // for (int i = 1 ; i < container.nbag ; i++) {
+      //   printf("%s,  \n", container.bag[i]);
+      // }
+      // printf("\n");
+      yaml_event_delete(parent->event);
+      DEALLOCATE2D(container.bag, container.nbag);
+      puts("  <<Sequence End>>");
+      return ierr;
       break;
     case YAML_MAPPING_START_EVENT:
-      puts("  <b>Start Mapping</b>");
-      ierr = parse_recurse_yaml(d, s, p, e, msg);
-      CHECKERRQ(FATAL, "Error parsing *.yaml");      
+      puts("  <<Mapping Start>>");
+      if (container.bag) {
+        container.key = container.bag[container.nbag - 1];
+      } else {
+        container.key = parent->key;
+      }
+      ierr = parse_recurse_yaml(d, &container, msg);
+      CHECKERRQ(FATAL, "Error parsing *.yaml");
       break;
     case YAML_MAPPING_END_EVENT:
-      puts("  <b>End Mapping</b>");
-      yaml_event_delete(e);
-      // DEALLOCATE(s);
+      if (parent->key) {
+        printf("  %s:\n", parent->key);
+      }
+      for (int i = 0; i < container.nbag; i+=2) {
+        printf("    %s:  %s\n", container.bag[i], container.bag[i + 1]);
+      }
+      yaml_event_delete(parent->event);
+      DEALLOCATE2D(container.bag, container.nbag);
+      puts("  <<Mapping End>>");
       return ierr;
       break;
 
     /* Data */
     case YAML_ALIAS_EVENT:
-      // printf("Got alias (anchor %s)\n", event.data.alias.anchor);
       break;
     case YAML_SCALAR_EVENT:
-      // DEALLOCATE(s);
-      // n = strlen(e->data.scalar.value);
-      // s = (char *)malloc((n + 1) * sizeof(char));
-      copy_string(s, e->data.scalar.value);
-      printf("    Got scalar (value %s)\n", e->data.scalar.value);
+      n = strlen(parent->event->data.scalar.value);
+      ierr =
+         parser_add_to_bag(&container, parent->event->data.scalar.value, msg);
+      // printf("    Got scalar (value %s)\n", parent->event->data.scalar.value);
       break;
     }
 
-    if (e->type != YAML_STREAM_END_EVENT) {
-      yaml_event_delete(e);
+    if (parent->event->type != YAML_STREAM_END_EVENT) {
+      yaml_event_delete(parent->event);
     }
-  } while (e->type != YAML_STREAM_END_EVENT);
+  } while (parent->event->type != YAML_STREAM_END_EVENT);
 
-  printf("}\n");
+  DEALLOCATE2D(container.bag, container.nbag);
   return ierr;
 CLEAN_UP:
+  DEALLOCATE2D(container.bag, container.nbag);
   bdestroy(message);
   return FATAL;
 }
 
-
-
-ERROR_CODE parse_mapping(Domain *d, yaml_parser_t *p, yaml_event_t *e,
-                        char **msg)
+ERROR_CODE parser_add_to_bag(ParserContainer *c, const char *word, char **msg)
 {
   ERROR_CODE ierr = SAFE;
-  bstring message = NULL;
-  char *s = NULL;
-  int n = 0;
   EMITERRQ(STACK, __func__);
 
-  if (!yaml_parser_parse(p, e)) {
-    message = bformat("Parser error [%d]", p->error);
-    EMITERRQ(FATAL, (const char *)message->data);
+  if (!c->bag) {
+    c->bag = malloc(sizeof(char *));
+  } else {
+    c->bag = realloc(c->bag, (c->nbag + 1) * sizeof(char *));
   }
+  c->nbag += 1;
+  c->bag[c->nbag - 1] = malloc((strlen(word) + 1) * sizeof(char));
+  copy_string(c->bag[c->nbag - 1], (unsigned char *)word);
 
-  if (e->type != YAML_SCALAR_EVENT) {
-    message = bformat("Parser error [%d]. Failed to retrieve mapping field.",
-                     p->error);
-    EMITERRQ(FATAL, (const char *)message->data);
-  }
-
-  n = strlen(e->data.scalar.value);
-  s = (char *)malloc((n + 1) * sizeof(char));
-  copy_string(s, e->data.scalar.value);
-
-  yaml_event_delete(e);
-
-  printf("\n\n{ %s\n", s);
-  // do {
-  //   if (!yaml_parser_parse(p, e)) {
-  //     message = bformat("Parser error %d\n", p->error);
-  //     EMITERRQ(FATAL, (const char *)message->data);
-  //   }
-  //
-  //   switch (e->type) {
-  //   case YAML_MAPPING_END_EVENT:
-  //     printf("}\n\n");
-  //     DEALLOCATE(s);
-  //     return ierr;
-  //   case YAML_SCALAR_EVENT:
-  //     //if (strcmp(e->data.scalar.value, "info") == 0) {
-  //     //  printf("    --> scalar (value %s [%ld])\n", e->data.scalar.value, strlen(e->data.scalar.value));
-  //     //} //else if (strcmp(e->data.scalar.value, "line_properties") == 0) {
-  //     printf("    --> scalar (value %s [%ld])\n", e->data.scalar.value, strlen(e->data.scalar.value));
-  //     //}
-  //     break;
-  //   }
-  //
-  //   if (e->type != YAML_STREAM_END_EVENT) {
-  //     yaml_event_delete(e);
-  //   }
-  // } while (e->type != YAML_STREAM_END_EVENT);
-
-  DEALLOCATE(s);
   return ierr;
 CLEAN_UP:
-  DEALLOCATE(s);
-  bdestroy(message);
   return FATAL;
 }

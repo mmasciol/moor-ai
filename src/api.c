@@ -17,7 +17,7 @@ ERROR_CODE api_allocate_domain(void **d, char **msg)
   ERROR_CODE ierr = SAFE;
   *msg = NULL;
 
-  *msg = (char *)malloc(2048 * sizeof(char));
+  *msg = (char *)malloc(4096 * sizeof(char));
   RESETERR();
   EMITERRQ(STACK, __func__);
 

@@ -53,6 +53,17 @@ typedef float ufloat_t;
     obj = NULL;                                                                \
   }
 
+#define DEALLOCATE2D(obj, n)                                                   \
+  if (obj) {                                                                   \
+    for (int i = 0; i < n; i++) {                                              \
+      if (obj[i]) {                                                            \
+       free(obj[i]);                                                           \
+      }                                                                        \
+    }                                                                          \
+    free(obj);                                                                 \
+    obj = NULL;                                                                \
+  }
+
 #define CHECKERRQ(code, string)                                                \
   do {                                                                         \
     if (WARNING < ierr) {                                                      \
