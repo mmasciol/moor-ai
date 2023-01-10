@@ -41,9 +41,42 @@
 // #define MAX(x, y) (((x) > (y)) ? (x) : (y))
 // #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
+#ifdef DOUBLE_PRECISION
+typedef double ufloat_t;
+#else
+typedef float ufloat_t;
+#endif
+
+#define DEALLOCATE(obj)                                                        \
+  if (obj) {                                                                   \
+    free(obj);                                                                 \
+    obj = NULL;                                                                \
+  }
+
+#define DEALLOCATE2D(obj, n)                                                   \
+  if (obj) {                                                                   \
+    for (int i = 0; i < n; i++) {                                              \
+      if (obj[i]) {                                                            \
+       free(obj[i]);                                                           \
+      }                                                                        \
+    }                                                                          \
+    free(obj);                                                                 \
+    obj = NULL;                                                                \
+  }
+
 #define CHECKERRQ(code, string)                                                \
   do {                                                                         \
+    if (WARNING < ierr) {                                                      \
+      EMITERRQ(code, string);                                                  \
+    }                                                                          \
+  } while (0);
+
+#define EMITERRQ(code, string)                                                 \
+  do {                                                                         \
     ierr = ierr_msg_set(msg, ierr, code, __FILE__, __LINE__, string);          \
+    if (WARNING < ierr) {                                                      \
+      goto CLEAN_UP;                                                           \
+    }                                                                          \
   } while (0);
 
 #define RESETERR()                                                             \

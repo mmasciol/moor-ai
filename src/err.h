@@ -4,6 +4,7 @@
 typedef enum ERROR_CODE {
   SAFE,
   VERBOSE,
+  STACK,
   INFO,
   WARNING,
   ERROR,

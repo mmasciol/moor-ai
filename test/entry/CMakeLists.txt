@@ -15,7 +15,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS}")
 message(STATUS "Compiling test-entry with options ${CMAKE_C_FLAGS}")
 
 file(GLOB _SRC "*.c")
-file(GLOB _HDR "*.h")
+file(GLOB _HDR "*.h" )
 
 set_source_files_properties(${_SRC} PROPERTIES COMPILE_FLAGS "${CMAKE_TEST_ENTRY_FLAGS}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_TEST_ENTRY_LINKER_FLAGS}")
