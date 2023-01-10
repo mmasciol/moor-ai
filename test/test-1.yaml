@@ -10,12 +10,21 @@ line_properties:
     stiffness: 900
     damping: 232
     mass_per_length: 3
+    temp: [1,3,5]
   - label: "rope"
     outer_diameter: 0.1
     inner_diameter: 0.0
     stiffness: 893
     damping: 3
     mass_per_length: 21
+    temp: [2,4,6]
+  - label: "dyneema"
+    outer_diameter: 0.1
+    inner_diameter: 0.323
+    stiffness: 30234
+    damping: 3434
+    mass_per_length: 10000
+    temp: [2,4,6]
 
-# other_prop:
-#   label: [8974387, 93, 4]
+other_prop:
+  label: [8974387, 93, 4]
