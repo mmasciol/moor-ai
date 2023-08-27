@@ -7,23 +7,29 @@
 #include "api.h"
 #include "bstrlib.h"
 #include "def.h"
+#include "domain.h"
+#include "parse.h"
 #include "sys.h"
-#include "yaml-c-wrap/api.h"
+#include "yaml.h"
 
 ERROR_CODE api_allocate_domain(void **d, char **msg)
 {
   ERROR_CODE ierr = SAFE;
   *msg = NULL;
 
-  *msg = (char *)malloc(1024 * sizeof(char));
+  *msg = (char *)malloc(4096 * sizeof(char));
   RESETERR();
-  CHECKERRQ(VERBOSE, __func__);
+  EMITERRQ(STACK, __func__);
 
   *d = malloc(sizeof(Domain));
 
-  // if (*d) {
-  //   CHECKERRQ(VERBOSE, "Allocated Domain");
-  // }
+  if (*d) {
+    EMITERRQ(VERBOSE, "Allocated Domain");
+  }
+
+  ierr = domain_initialize(*d, msg);
+  CHECKERRQ(FATAL, "Domain initialization failure.");
+
   return ierr;
 CLEAN_UP:
   return FATAL;
@@ -34,13 +40,13 @@ ERROR_CODE api_free_domain(void **d, char **msg)
   ERROR_CODE ierr = SAFE;
 
   RESETERR();
-  CHECKERRQ(VERBOSE, __func__);
+  EMITERRQ(STACK, __func__);
 
-  CHECKERRQ(VERBOSE, "Deallocated domain");
-  CHECKERRQ(ERROR, "second domain");
-  CHECKERRQ(FATAL, "another domain");
+  ierr = domain_free(*d, msg);
+  CHECKERRQ(FATAL, "Error deallocating Domain");
 
   if (*d) {
+    EMITERRQ(VERBOSE, "Deallocated domain");
     free(*d);
   }
   return ierr;
@@ -52,17 +58,16 @@ ERROR_CODE api_read_yaml_file(void **d, char *fpath, char **msg)
 {
   ERROR_CODE ierr = SAFE;
   bstring message = NULL;
-  void *yaml = NULL;
 
   RESETERR();
-  CHECKERRQ(VERBOSE, __func__);
+  EMITERRQ(STACK, __func__);
 
   message = bformat("Reading *.yaml file <%s>", fpath);
-  CHECKERRQ(INFO, message->data);
+  EMITERRQ(INFO, (const char *)message->data);
   bdestroy(message);
 
-  yaml = yaml_open_file(fpath);
-  yaml_close_file(yaml);
+  ierr = parse_yaml(*d, fpath, msg);
+  CHECKERRQ(FATAL, "*.yaml parsing failed.");
 
   return ierr;
 CLEAN_UP:
@@ -74,12 +79,13 @@ ERROR_CODE api_flush_msg(char **msg)
   ERROR_CODE ierr = SAFE;
 
   RESETERR();
-  CHECKERRQ(VERBOSE, __func__);
+  EMITERRQ(STACK, __func__);
 
   if (*msg) {
     free(*msg);
     *msg = NULL;
   }
+
   return ierr;
 CLEAN_UP:
   return FATAL;

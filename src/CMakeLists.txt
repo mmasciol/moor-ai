@@ -11,7 +11,13 @@ elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(CMAKE_MOOR_AI_LINKER_FLAGS "${CMAKE_MOOR_AI_LINKER_FLAGS} -O3 -shared -g")
 endif()
 
-add_compile_definitions(DEBUG=1)
+if (MOOR_AI_DOUBLE_PRECISION)
+    set(CMAKE_MOOR_AI_FLAGS "${CMAKE_MOOR_AI_FLAGS} -DDOUBLE_PRECISION")
+endif()
+
+if (MOOR_AI_DEBUG)
+    set(CMAKE_MOOR_AI_FLAGS "${CMAKE_MOOR_AI_FLAGS} -DDEBUG")
+endif()
 
 set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS}")
 message(STATUS "Compiling moor-ai-api with options ${CMAKE_MOOR_AI_FLAGS}")
@@ -23,4 +29,4 @@ set_source_files_properties(${_SRC} PROPERTIES COMPILE_FLAGS "${CMAKE_MOOR_AI_FL
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_MOOR_AI_LINKER_FLAGS}")
 
 add_library(moor-ai SHARED ${_SRC} ${_HDR})
-target_link_libraries(moor-ai bstring yaml-cpp yaml-c-wrapper)
+target_link_libraries(moor-ai bstring yaml simclist)
