@@ -1,3 +1,6 @@
-[submodule "pkg/yaml-cpp"]
-	path = pkg/yaml-cpp
-	url = https://github.com/jbeder/yaml-cpp
+[submodule "pkg/yaml"]
+    path = pkg/yaml
+    url = https://github.com/yaml/libyaml
+[submodule "pkg/simclist"]
+    path = pkg/simclist
+    url = https://github.com/mij/simclist.git

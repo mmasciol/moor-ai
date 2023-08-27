@@ -11,15 +11,23 @@ install-dependencies:
 	apt-get update
 	apt-get install -y clang-format cmake g++ gcc gcovr ggcov git iwyu lcov make python-is-python3 python3-pip python3.8-venv tzdata uncrustify valgrind
 
-.PHONY: compile-moor-ai
-compile-moor-ai:
-	cmake -DYAML_BUILD_SHARED_LIBS=ON -B build
+.PHONY: compile
+compile:
+	cmake -B build -DMOOR_AI_DEBUG=ON -DMOOR_AI_DOUBLE_PRECISION=ON
 	make -C ./build -j4
 
-.PHONY: install-moor-ai
-install-moor-ai:
+.PHONY: install
+install:
 	cmake --install ./build/
 
 .PHONY: python-test
 python-test:
 	python -m python.moor_ai.test_api
+
+.PHONY: test-exe
+test-exe:
+	./bin/test/test-entry
+
+.PHONY: test-memory-check
+test-memory-check:
+	valgrind --tool=memcheck --leak-check=yes --show-reachable=yes --track-origins=yes --error-exitcode=1 --leak-check=full ./bin/test/test-entry

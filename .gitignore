@@ -4,6 +4,7 @@ __pycache__
 moor-env
 *.egg-info
 .ci-venv
+dist
 
 build
 bin

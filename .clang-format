@@ -1,0 +1,8 @@
+# https://gitlab.cern.ch/scipp/pixels/labRemote/-/blob/devel/.clang-format
+
+BasedOnStyle: LLVM
+IndentWidth: 2
+UseTab: Always
+BreakBeforeBraces: Linux
+AllowShortIfStatementsOnASingleLine: false
+IndentCaseLabels: false
