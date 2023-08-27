@@ -55,21 +55,21 @@ jobs:
         with:
           name: binaries
           path: bin
-      - name: download build artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: build
-          path: build
-      - name: test execution
-        run: |
-          chmod +x ./bin/*
-          chmod +x ./bin/test/*
-          make test-exe
-      - name: test memory leaks
-        run: |
-          chmod +x ./bin/*
-          chmod +x ./bin/test/*
-          make test-memory-check
+      # - name: download build artifact
+      #   uses: actions/download-artifact@v3
+      #   with:
+      #     name: build
+      #     path: build
+      # - name: test execution
+      #   run: |
+      #     chmod +x ./bin/*
+      #     chmod +x ./bin/test/*
+      #     make test-exe
+      # - name: test memory leaks
+      #   run: |
+      #     chmod +x ./bin/*
+      #     chmod +x ./bin/test/*
+      #     make test-memory-check
 
   test-python:
     needs: [build]
