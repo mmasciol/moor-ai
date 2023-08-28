@@ -6,7 +6,7 @@ export class InfrastructureStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const pipeline = new CodePipeline(this, 'Pipeline', {
+    new CodePipeline(this, 'Pipeline', {
       pipelineName: 'PipelineMoorAI',
       synth: new ShellStep('Synth', {
         input: CodePipelineSource.gitHub('mmasciol/moor-ai', 'maint/infrastructure'),
