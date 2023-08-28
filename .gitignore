@@ -5,6 +5,7 @@ moor-env
 *.egg-info
 .ci-venv
 dist
+node_modules
 
 build
 bin
