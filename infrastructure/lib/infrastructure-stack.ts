@@ -10,8 +10,7 @@ export class InfrastructureStack extends cdk.Stack {
       pipelineName: 'PipelineMoorAI',
       synth: new ShellStep('Synth', {
         input: CodePipelineSource.gitHub('mmasciol/moor-ai', 'maint/infrastructure'),
-        commands: ['cd infrastructure', 'npm ci', 'npm run build', 'npx cdk synth'],
-        primaryOutputDirectory: "infrastructure/cdk.out"
+        commands: ['cd infrastructure', 'npm ci', 'npm run build', 'npx cdk synth']
       })
     });
   }
